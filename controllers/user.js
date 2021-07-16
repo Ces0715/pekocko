@@ -1,7 +1,11 @@
+// hasher le MP des utilsateurs
 const bcrypt = require('bcrypt');
+// recuperation du model user
 const User = require('../models/User');
+//attribution token à utilisateur
 const jwt = require('jsonwebtoken');
 
+// middleware pour la création d'un nouvel utilisateur
 exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
       .then(hash => {
@@ -9,6 +13,7 @@ exports.signup = (req, res, next) => {
           email: req.body.email,
           password: hash
         });
+// enregistrement de l'utilisateur dans la base de données
         user.save()
           .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
           .catch(error => res.status(400).json({ error }));
@@ -16,6 +21,7 @@ exports.signup = (req, res, next) => {
       .catch(error => res.status(500).json({ error }));
   };
 
+  // verification de l'utilisateur avec login
   exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email })
       .then(user => {
