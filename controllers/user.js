@@ -19,6 +19,7 @@ exports.signup = (req, res, next) => {
           .catch(error => res.status(400).json({ error }));
       })
       .catch(error => res.status(500).json({ error }));
+      next();
   };
 
   // verification de l'utilisateur avec login
@@ -33,8 +34,8 @@ exports.signup = (req, res, next) => {
             if (!valid) {
               return res.status(401).json({ error: 'Mot de passe incorrect !' });
             }
-            res.status(200).json({
-              userId: user._id,
+            res.status(200).json(
+              { userId: user._id,
               token: jwt.sign(
                 { userId: user._id },
                 'RANDOM_TOKEN_SECRET',
@@ -45,4 +46,5 @@ exports.signup = (req, res, next) => {
           .catch(error => res.status(500).json({ error }));
       })
       .catch(error => res.status(500).json({ error }));
+      next();
   };
