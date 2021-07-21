@@ -1,5 +1,7 @@
+// recuperer jsontoken
 const jwt = require('jsonwebtoken');
 
+// securiser les routes
 module.exports = (req, res, next) => {
   try {
     const token = req.headers.authorization.split(' ')[1];

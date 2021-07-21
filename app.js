@@ -2,12 +2,12 @@
 const express = require('express');
 // Importer mongoose pour pouvoir utiliser la base de données
 const mongoose = require('mongoose');
+// donner acces au chemin (importer images)
 const path = require('path');
-// importer le model de sauce
-//const Sauce = require('./models/Sauce');
 
-//declaration des routes
-const saucesRoutes = require('./routes/sauces');
+//DECLARATION DES ROUTES
+// importer la route dédiée aux sauces
+const sauceRoutes = require('./routes/sauce');
 // Importer la route dédiée aux utilisateurs
 const userRoutes = require('./routes/user');
 
@@ -35,11 +35,14 @@ app.use(express.json());
 
 mongoose.set('useCreateIndex', true);
 
+// gestion des images
 app.use('/images',express.static(path.join(__dirname,'images')));
 
 // Va servir les routes dédiées aux utilisateurs
 app.use('/api/auth', userRoutes);
-app.use('/api/sauces', saucesRoutes);
+
+// Va servir les routes dédiées aux sauces
+app.use('/api/sauces', sauceRoutes);
 
 //Exportation de l'application express
 module.exports = app;

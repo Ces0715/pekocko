@@ -1,6 +1,7 @@
+// recuperer le modele sauce
 const Sauce = require('../models/Sauce');
+// recuperer modele file system pour les images
 const fs = require('fs');
-
 
 //route get
 exports.getOneSauce = (req, res, next) => {
@@ -28,7 +29,7 @@ exports.createSauce = (req, res, next) => {
   sauce.save()
     .then(() => res.status(201).json({ message: 'Objet enregistré !'}))
     .catch(error => res.status(400).json({ error }));
-    next();
+    
 };
 
 //route put
