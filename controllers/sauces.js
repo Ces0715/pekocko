@@ -3,12 +3,45 @@ const Sauce = require ('../models/Sauce');
 // recuperer modele file system pour les images
 const fs = require('fs');
 
+//route get
+exports.getOneSauce = (req, res, next) => {
+  Sauce.findOne({
+    _id: req.params.id
+  }).then(
+    (sauce) => {
+      res.status(200).json(sauce);
+    }
+  ).catch(
+    (error) => {
+      res.status(404).json({
+        error: error
+      });
+      next();
+    }
+  );
+}
+
+exports.getAllSauces = (_req, res, next) => {
+  Sauce.find()
+    .then(sauces => res.status(200).json(sauces))
+    .catch(error => res.status(400).json({ error }));
+    next();
+};
 
 //route post
 exports.createSauce = (req, res, next) => {
+  // On stocke les données envoyées par le front-end sous forme de form-data dans une variable en les transformant en objet js
+  const sauceObject = JSON.parse(req.body.sauce);
+  // On supprime l'id généré automatiquement et envoyé par le front-end. L'id de la sauce est créé par la base MongoDB lors de la création dans la base
+  delete sauceObject._id;
+  // Création d'une instance du modèle Sauce
   const sauce = new Sauce({
-   ...req.body
-  });
+   ...sauceObject,
+   // On modifie l'URL de l'image, on veut l'URL complète, quelque chose dynamique avec les segments de l'URL
+   imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+   
+ });
+  // Sauvegarde de la sauce dans la base de données
   sauce.save().then(
     () => {
       res.status(201).json({
@@ -61,29 +94,7 @@ exports.deleteSauce = (req, res, next) => {
   next();
 }
 
-//route get
-exports.getOneSauce = (req, res, next) => {
-  Sauce.findOne({
-    _id: req.params.id
-  }).then(
-    (sauce) => {
-      res.status(200).json(sauce);
-    }
-  ).catch(
-    (error) => {
-      res.status(404).json({
-        error: error
-      });
-    }
-  );
-}
 
-exports.getAllSauces = (_req, res, next) => {
-  Sauce.find()
-    .then(sauces => res.status(200).json(sauces))
-    .catch(error => res.status(400).json({ error }));
-    next();
-};
 
 // Création du like et dislike
 exports.likeSauce = (req, res, next) => {    
