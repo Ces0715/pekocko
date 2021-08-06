@@ -37,7 +37,6 @@ exports.deleteOneSauce = (req, res, _) => {
     .catch(error => res.status(400).json({ error }));
 };
 
-
 //accéder à une sauce route get
 exports.getOneSauce = (req, res, _) => {
   Sauce.findOne({ _id: req.params.id })
@@ -55,7 +54,6 @@ exports.getAllSauce = (_req, res, _) => {
       res.status(400).json({ error });
     });
 };
-
 
 exports.likeDislike = (req, res, _) => {
   switch (req.body.like) {
