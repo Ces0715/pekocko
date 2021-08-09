@@ -1,6 +1,5 @@
 // recuperer le modele sauce
 const Sauce = require('../models/Sauce');
-
 // recuperer modele file system pour les images
 const fs = require('fs');
 
@@ -31,10 +30,23 @@ exports.modifyOneSauce = (req, res, _) => {
 };
 
 //supprimer une sauce
-exports.deleteOneSauce = (req, res, _) => {
-  Sauce.deleteOne({ _id: req.params.id })
-    .then(() => res.status(200).json({ message: 'sauce supprimée.' }))
-    .catch(error => res.status(400).json({ error }));
+//exports.deleteOneSauce = (req, res, _) => {
+  //Sauce.deleteOne({ _id: req.params.id })
+    //.then(() => res.status(200).json({ message: 'sauce supprimée.' }))
+    //.catch(error => res.status(400).json({ error }));
+//};
+
+exports.deleteSauce = (req, res, next) => {
+  Sauce.findOne({ _id: req.params.id })
+    .then(sauce => {
+      const filename = sauce.imageUrl.split('/images/')[1];
+      fs.unlink(`images/${filename}`, () => {
+        Sauce.deleteOne({ _id: req.params.id })
+          .then(() => res.status(200).json({ message: 'Objet supprimé !'}))
+          .catch(error => res.status(400).json({ error }));
+      });
+    })
+    .catch(error => res.status(500).json({ error }));
 };
 
 //accéder à une sauce route get
@@ -57,7 +69,8 @@ exports.getAllSauce = (_req, res, _) => {
 
 exports.likeDislike = (req, res, _) => {
   switch (req.body.like) {
-    case 0:                                                   //cas: req.body.like = 0
+ //cas: req.body.like = 0
+    case 0:                                                  
       Sauce.findOne({ _id: req.params.id })
         .then((sauce) => {
           if (sauce.usersLiked.find( user => user === req.body.userId)) {  // on cherche si l'utilisateur est déjà dans le tableau usersLiked
