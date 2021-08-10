@@ -9,7 +9,7 @@ const sauceRoutes = require('./routes/sauce');
 // Importer la route dédiée aux utilisateurs
 const userRoutes = require('./routes/user');
 
-//importer helmet pour securiser express
+//importer helmet pour securiser express (protection application)
 const helmet = require('helmet'); 
 // donner acces au chemin (importer images)
 const path = require('path');
@@ -19,7 +19,11 @@ const app = express();
 //connection à la base de données de MongoDB
 mongoose.connect('mongodb+srv://ces0715:ambush0715@cluster0.ikwgu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
   { useNewUrlParser: true,
-    useUnifiedTopology: true })
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+    
+  })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
@@ -28,7 +32,6 @@ app.use((_req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-  //res.setHeader('Content-Security-Policy', "default-src 'self'");
   next();
 });
 
@@ -45,11 +48,11 @@ app.use((_req, res, next) => {
 });
 
 mongoose.set('useCreateIndex', true);
+//debug mod of mongoose
+mongoose.set('debug', true);
 
 // gestion des images
 app.use('/images',express.static(path.join(__dirname,'images')));
-
-
 
 // Va servir les routes dédiées aux utilisateurs
 app.use('/api/auth', userRoutes);

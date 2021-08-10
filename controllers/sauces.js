@@ -29,13 +29,7 @@ exports.modifyOneSauce = (req, res, _) => {
     .catch(error => res.status(400).json({ error }));
 };
 
-//supprimer une sauce
-//exports.deleteOneSauce = (req, res, _) => {
-  //Sauce.deleteOne({ _id: req.params.id })
-    //.then(() => res.status(200).json({ message: 'sauce supprimée.' }))
-    //.catch(error => res.status(400).json({ error }));
-//};
-
+// supprimer une sauce
 exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then(sauce => {
@@ -67,22 +61,28 @@ exports.getAllSauce = (_req, res, _) => {
     });
 };
 
+// creer like dislike
 exports.likeDislike = (req, res, _) => {
   switch (req.body.like) {
  //cas: req.body.like = 0
     case 0:                                                  
       Sauce.findOne({ _id: req.params.id })
         .then((sauce) => {
-          if (sauce.usersLiked.find( user => user === req.body.userId)) {  // on cherche si l'utilisateur est déjà dans le tableau usersLiked
-            Sauce.updateOne({ _id: req.params.id }, {         // si oui, on va mettre à jour la sauce avec le _id présent dans la requête
-              $inc: { likes: -1 },                            // on décrémente la valeur des likes de 1 (soit -1)
-              $pull: { usersLiked: req.body.userId }          // on retire l'utilisateur du tableau.
+          if (sauce.usersLiked.find( user => user === req.body.userId)) {  
+            // on cherche si l'utilisateur est déjà dans le tableau usersLiked
+            Sauce.updateOne({ _id: req.params.id }, {         
+            // si oui, on va mettre à jour la sauce avec le _id présent dans la requête
+              $inc: { likes: -1 },                           
+               // on décrémente la valeur des likes de 1 (soit -1)
+              $pull: { usersLiked: req.body.userId }          
+              // on retire l'utilisateur du tableau.
             })
               .then(() => { res.status(201).json({ message: "vote enregistré."}); }) //code 201: created
               .catch((error) => { res.status(400).json({error}); });
 
           } 
-          if (sauce.usersDisliked.find(user => user === req.body.userId)) {  //mêmes principes que précédemment avec le tableau usersDisliked
+          if (sauce.usersDisliked.find(user => user === req.body.userId)) {  
+            //mêmes principes que précédemment avec le tableau usersDisliked
             Sauce.updateOne({ _id: req.params.id }, {
               $inc: { dislikes: -1 },
               $pull: { usersDisliked: req.body.userId }
