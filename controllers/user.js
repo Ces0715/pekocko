@@ -1,4 +1,4 @@
-// hasher le MP des utilsateurs
+// hasher le MP des utilisateurs
 const bcrypt = require('bcrypt');
 // recuperation du model user
 const User = require('../models/User');
@@ -19,7 +19,7 @@ exports.signup = (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
     })
     .catch(error => res.status(500).json({ error }));
-  next();
+  
 };
 
 // verification de l'utilisateur avec login

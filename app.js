@@ -9,6 +9,9 @@ const sauceRoutes = require('./routes/sauce');
 // Importer la route dédiée aux utilisateurs
 const userRoutes = require('./routes/user');
 
+// utilisation du module 'dotenv' pour masquer les informations de connexion à la base de données à l'aide de variables d'environnement
+require("dotenv").config();
+
 //importer helmet pour securiser express (protection application)
 const helmet = require('helmet'); 
 // donner acces au chemin (importer images)
@@ -17,11 +20,13 @@ const path = require('path');
 const app = express();
 
 //connection à la base de données de MongoDB
-mongoose.connect('mongodb+srv://ces0715:ambush0715@cluster0.ikwgu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+// Connection à la base de données MongoDB avec la sécurité vers le fichier .env pour cacher le mot de passe
+mongoose.connect(process.env.DB_URI,
+//mongoose.connect('mongodb+srv://ces0715:ambush0715@cluster0.ikwgu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
+    //useCreateIndex: true,
+    //useFindAndModify: false,
     
   })
   .then(() => console.log('Connexion à MongoDB réussie !'))
@@ -46,6 +51,7 @@ app.use((_req, res, next) => {
   res.setHeader("X-XSS-Protection", "1; mode=block");
   next();
 });
+
 
 mongoose.set('useCreateIndex', true);
 //debug mod of mongoose
