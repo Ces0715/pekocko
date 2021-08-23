@@ -3,7 +3,6 @@ const express = require('express');
 // Importer mongoose pour pouvoir utiliser la base de données
 const mongoose = require('mongoose');
 
-
 //DECLARATION DES ROUTES
 //importer la route dédiée aux sauces
 const sauceRoutes = require('./routes/sauce');
@@ -37,9 +36,6 @@ app.use((_req, res, next) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
   next();
 });
-
-
-
 
 //transformation des données de la requete POST en JSON
 app.use(express.json());
