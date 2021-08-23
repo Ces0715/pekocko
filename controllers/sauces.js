@@ -3,7 +3,7 @@ const Sauce = require('../models/Sauce');
 // recuperer modele file system pour les images
 const fs = require('fs');
 
-//creer une sauce
+//creer une sauce (route POST)
 exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);
   delete sauceObject._id;
@@ -43,7 +43,7 @@ exports.deleteSauce = (req, res, next) => {
     .catch(error => res.status(500).json({ error }));
 };
 
-//accéder à une sauce route get
+//accéder à une sauce (route get)
 exports.getOneSauce = (req, res, _) => {
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => { res.status(200).json(sauce); })
@@ -52,7 +52,7 @@ exports.getOneSauce = (req, res, _) => {
     });
 };
 
-//accéder à toutes les sauces
+//accéder à toutes les sauces (route get)
 exports.getAllSauce = (_req, res, _) => {
   Sauce.find()
     .then((sauces) => { res.status(200).json(sauces); })
@@ -61,7 +61,7 @@ exports.getAllSauce = (_req, res, _) => {
     });
 };
 
-// creer like dislike
+// creer like dislike (route post)
 exports.likeDislike = (req, res, _) => {
   switch (req.body.like) {
  //cas: req.body.like = 0
