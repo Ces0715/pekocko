@@ -43,3 +43,8 @@ Puis lancez le serveur: nodemon server.
 - ng serve via le terminal sur le frontend
 - nodemon server via le terminal sur le backend
 - Se connecter à l'url : http://localhost:4200
+
+### Connection
+- Ouvrir localhost:4200 dans votre navigateur.
+- S'inscrire sur l'application avec un email et mot de passe
+
