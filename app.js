@@ -9,22 +9,21 @@ const sauceRoutes = require('./routes/sauce');
 // Importer la route dédiée aux utilisateurs
 const userRoutes = require('./routes/user');
 
-// utilisation du module 'dotenv' pour masquer les informations de connexion à la base de données à l'aide de variables d'environnement
+//module 'dotenv' pour masquer les informations de connexion à la base de données à l'aide de variables d'environnement
 require("dotenv").config();
 
 //Importer helmet pour securiser express (protection application)
-const helmet = require('helmet'); 
+const helmet = require('helmet');
 // Donner acces au chemin (importer images)
 const path = require('path');
 //Création de l'application utilisant le framework express
 const app = express();
 
-
 //Connection à la base de données MongoDB avec la sécurité vers le fichier .env pour cacher le mot de passe
 mongoose.connect(process.env.DB_URI,
-//mongoose.connect('mongodb+srv://ces0715:ambush0715@cluster0.ikwgu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
-  { useNewUrlParser: true,
-    useUnifiedTopology: true,  
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
   })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
@@ -52,7 +51,7 @@ mongoose.set('useCreateIndex', true);
 mongoose.set('debug', true);
 
 // gestion des images
-app.use('/images',express.static(path.join(__dirname,'images')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // Va servir les routes dédiées aux utilisateurs
 app.use('/api/auth', userRoutes);

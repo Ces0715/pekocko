@@ -15,7 +15,7 @@ const normalizePort = val => {
 };
 
 //ajout du port de connection-- si aucun port ecouter sur port 3000
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 // fonction errorHandler pour rechercher les erreurs et enregister dans le serveur
